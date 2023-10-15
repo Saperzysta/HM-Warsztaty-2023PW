@@ -1,4 +1,16 @@
-persons = {}
+import json
+from pathlib import Path
+
+path = Path("persons.json")
+
+if path.exists():
+    f = open(path, "r")
+    persons = json.load(f)
+    f.close()
+else:
+    persons = {}
+
+
 commands = [
     "new_contact", "show_contacts"
 ]
@@ -15,6 +27,13 @@ while True:
         print(persons)
     #else:
      #   print("unknown command")
-    command = input("Do you want to continue Y/N? ")
-    if command =="N":
+    answer = input("Do you want to continue Y/N? ")
+    while answer.lower() not in ["y", "n"]:
+        print("Choose Y or N only")
+        answer = input("Do you want to continue Y/N? ")
+
+    if answer.lower() =="n":
+        f = open("persons.json", "w")
+        json.dump(persons, f)
+        f.close()
         break
